@@ -23,6 +23,8 @@ class Session
     query[:aggs][:path] = {}
     query[:aggs][:path][:terms] = {}
     query[:aggs][:path][:terms][:field] = feild
+    query[:aggs][:path][:terms][:order] = { "_count" => "desc" }
+    
     # query[:aggs][:path][:histogram] = {}
     # query[:aggs][:path][:histogram][:field] = keyword
 
