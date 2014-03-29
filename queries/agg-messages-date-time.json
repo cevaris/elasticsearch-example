@@ -1,0 +1,20 @@
+{
+    "aggs" : {
+        "message_per_minute" : {
+            "filter" : { 
+                "and" : [
+                    
+                    { "term" : { "day_bucket" : 29 } },
+                    { "term" : { "hour_bucket" : 5 } },
+                    { "term" : { "minute_bucket" : 13 } },
+                    { "term" : { "second" : 5 } }
+                ] 
+            },
+            "aggs" : {
+                "path" : {
+                    "terms": { "field": "message" }
+                }
+            }
+        }
+    }
+}

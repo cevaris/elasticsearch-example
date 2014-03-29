@@ -3,9 +3,9 @@ POST _search
     "filter" : {
         "query" : {
             "bool" : {
-               "should" : [
+               "must" : [
                    { "term": { "year_bucket": 2014 } },
-                   { "term": { "min_bucket": 10 } }
+                   { "term": { "minute_bucket": 10 } }
                 ]
             }
         }

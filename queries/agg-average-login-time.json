@@ -1,0 +1,16 @@
+{
+    "aggs" : {
+        "message_per_second" : {
+            "filter" : { 
+                "and" : [
+                    { "term" : { "message" : "login" } }
+                ] 
+            },
+            "aggs" : {
+                "average_login_hour" : { "avg" : { "field" : "hour_bucket" } },
+                "average_login_minute" : { "avg" : { "field" : "minute_bucket" } },
+                "average_login_second" : { "avg" : { "field" : "second" } }
+            }
+        }
+    }
+}

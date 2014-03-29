@@ -1,0 +1,13 @@
+POST _search
+{
+    "aggs" : {
+        "message_per_minute" : {
+            "filter" : { "term" : { "minute_bucket" : 5 } },
+            "aggs" : {
+                "path" : {
+                    "terms": { "field": "message" }
+                }
+            }
+        }
+    }
+}
