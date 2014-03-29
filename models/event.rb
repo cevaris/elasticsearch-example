@@ -3,6 +3,7 @@ require 'elasticsearch'
 require 'multi_json'
 require 'base64'
 require 'securerandom'
+require 'lorem_ipsum_amet'
 
 class Event
 
@@ -33,96 +34,60 @@ class Event
 
 
 
-  def self.get_event(event, app=1)
-
-    if app == 1
-      
-      case event
-      when :scroll_up, :scroll_up, :swipe_left
-        {name: event, status: :info}
-      when :open, :close, :login, :logout
-        {name: event, status: :info}
-      when :create_task, :comment_task, :delete_task
-        {name: event, value: random(1..1000), status: :info}
-      when :network_timeout, :app_crash
-        {name: event, status: :error}
-      else
-        raise "Unknown event type: #{event}}"
-      end
-
-    elsif app == 2
-
-      case event
-      when :scroll_up, :scroll_up, :swipe_left
-        {name: event, status: :info}
-      when :start, :end, :login, :logout
-        {name: event, status: :info}
-      when :click_page, :click_photo, :like_page, :like_photo, :commented_page, :commented_photo
-        {name: event, value: random(1..1000), status: :info}
-      when :network_timeout, :app_crash
-        {name: event, status: :error}
-      else
-        raise "Unknown event type: #{event}}"
-      end
-
-    elsif app == 3
-
-      case event
-      when :scroll_up, :scroll_up, :swipe_left
-        {name: event, status: :info}
-      when :start, :end, :login, :logout
-        {name: event, status: :info}
-      when :search
-        {name: event, value: LoremIpsum.random[1..15], status: :info}
-      when :click_page, :like_page
-        {name: event, value: random(1..1000), status: :info}
-      when :network_timeout, :app_crash
-        {name: event, status: :error}
-      else
-        raise "Unknown event type: #{event}}"
-      end
-
-    end
+  def self.get_event(event)
+    case event
+    when :scroll_up, :scroll_down, :swipe_left, :swipe_right
+      return {name: event, status: :info}, {app_id: rand(1..3), client_id: rand(1..50)}
+    when :open, :close, :login, :logout, :settings
+      return {name: event, status: :info}, {app_id: rand(1..3), client_id: rand(1..50)}
+    when :network_timeout, :app_crash
+      return {name: event, status: :error}, {app_id: rand(1..3), client_id: rand(1..50)}
     
+    when :create_task, :comment_task, :delete_task
+      return {name: event, value: rand(1..1000), status: :info}, {app_id: 1, client_id: rand(1..50)}
+    when :click_page, :click_photo, :like_page, :like_photo, :commented_page, :commented_photo
+      return {name: event, value: rand(1..1000), status: :info}, {app_id: 2, client_id: rand(1..50)}
+    when :search
+      return {name: event, value: LoremIpsum.random[1..15], status: :info}, {app_id: 3, client_id: rand(1..50)}
+    when :add_to_cart, :purchase
+      return {name: event, value: rand(1..1000), status: :info}, {app_id: 4, client_id: rand(1..50)}
+    
+    else
+      raise "Unknown event type: #{event}}"
+    end
+
   end
   
   def self.create()
     weights = {
-      a:5, b:5, c:25, d:15, e:10, f: 4, g: 20, h: 5, i: 4, j: 7
-    }
-
-    session = []
-
-    samples = {
-      a: :login,
-      b: :settings,
-      c: :click_page,
-      d: :like_photo,
-      d: :like_photo,
-      e: :add_to_cart,
-      f: :purchase,
-      g: :search,
-      h: :logout,
-      i: :app_crash,
-      j: :network_timeout,
+      open: 20, close: 20,
+      login:5, logout:5, settings:5, 
+      scroll_up:10, scroll_up:10, swipe_left:10, 
+      app_crash: 4, network_timeout: 7,
+      click_page:25, like_photo:15, 
+      add_to_cart:10, purchase: 4,
+      create_task: 10, comment_task: 20, delete_task:5,
+      click_page:20, click_photo:14, like_page:10, like_photo:12, commented_page:7, commented_photo:8,
+      search: 10
     }
 
     sampler = WeightedRandomizer.new(weights)
-    item = samples[sampler.sample]     
-    event = Event.new
-    event.message = item[0]
-    event[:status] = item[1]
-    event[:client_timestamp] = Time.now.to_i - rand(1..100)
-    event[:second] = Time.now.getutc.sec
-    event[:minute_bucket] = Time.now.getutc.min
-    event[:hour_bucket] = Time.now.getutc.hour
-    event[:week_bucket] = Time.now.getutc.yday/7
-    event[:day_bucket] = Time.now.getutc.day
-    event[:month_bucket] = Time.now.getutc.month
-    event[:year_bucket] = Time.now.getutc.year
+    event_type = Event.get_event(sampler.sample)
+    # item = samples[sampler.sample]     
+    # event = Event.new
+    # event.message = item[0]
+    # event[:status] = item[1]
+    # event[:client_timestamp] = Time.now.to_i - rand(1..100)
+    # event[:second] = Time.now.getutc.sec
+    # event[:minute_bucket] = Time.now.getutc.min
+    # event[:hour_bucket] = Time.now.getutc.hour
+    # event[:week_bucket] = Time.now.getutc.yday/7
+    # event[:day_bucket] = Time.now.getutc.day
+    # event[:month_bucket] = Time.now.getutc.month
+    # event[:year_bucket] = Time.now.getutc.year
 
-    event
-    Session.new(session)
+    # event
+    # Session.new(session)
   end
 
 end
