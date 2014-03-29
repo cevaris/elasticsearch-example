@@ -1,9 +1,6 @@
 source 'https://rubygems.org'
 
 
-gem 'librarian-puppet'
-
-
 gem 'redis', '~> 3.0.6'
 gem 'cassandra', '~> 0.23.0'
 
