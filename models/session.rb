@@ -16,17 +16,32 @@ class Session
     @path = path
   end
 
-  def self.agg(feild)
-    query = {}
-    query[:aggs] = {}
-    query[:aggs][:path] = {}
-    query[:aggs][:path] = {}
-    query[:aggs][:path][:terms] = {}
-    query[:aggs][:path][:terms][:field] = feild
-    query[:aggs][:path][:terms][:order] = { "_count" => "desc" }
-    
-    # query[:aggs][:path][:histogram] = {}
-    # query[:aggs][:path][:histogram][:field] = keyword
+  def self.agg(field, sort="desc")
+    # query = {}
+    # query[:aggs] = {}
+    # query[:aggs][:path] = {}
+    # query[:aggs][:path][:terms] = {}
+    # query[:aggs][:path][:terms][:field] = feild
+    # query[:aggs][:path][:terms][:order] = { "_count" => sort }
+
+    query = {
+      query: {
+
+        term: {
+          'status' => 'error'
+        }
+      },
+      # aggs: {
+      #   path: {
+      #     terms: {
+      #       field: field,
+      #       order: { 
+      #         "_count" => sort 
+      #       }
+      #     }
+      #   }
+      # }
+    }
 
     puts query
     $esc ||= Elasticsearch::Client.new
