@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (3.0.0)
     cassandra (0.23.0)
       json
       rake
@@ -20,6 +21,8 @@ GEM
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
+    forgery (0.5.0)
+    i18n (0.6.9)
     json (1.8.1)
     mono_logger (1.1.0)
     multi_json (1.9.2)
@@ -54,8 +57,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   cassandra (~> 0.23.0)
   elasticsearch (~> 1.0.1)
+  faraday (~> 0.9.0)
   foreman (~> 0.63.0)
+  forgery (= 0.5.0)
+  i18n
+  multi_json (~> 1.9.2)
   redis (~> 3.0.7)
   resque (~> 1.25.2)

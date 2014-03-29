@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+gem 'faraday', '~> 0.9.0'
+gem 'multi_json', '~> 1.9.2'
+gem 'forgery', '0.5.0'
+gem "activesupport", require: "active_support"
+gem 'i18n'
+
 
 gem 'redis', '~> 3.0.7'
 gem 'cassandra', '~> 0.23.0'
