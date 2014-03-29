@@ -7,6 +7,7 @@ gem "activesupport", require: "active_support"
 gem 'i18n'
 gem 'tweetstream', '~> 2.6.1'
 gem 'weighted_randomizer'
+gem 'lorem_ipsum_amet'
 
 
 gem 'redis', '~> 3.0.7'
