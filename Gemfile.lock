@@ -98,6 +98,7 @@ GEM
       simple_oauth (~> 0.2.0)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    weighted_randomizer (0.1.2)
 
 PLATFORMS
   ruby
@@ -113,4 +114,5 @@ DEPENDENCIES
   multi_json (~> 1.9.2)
   redis (~> 3.0.7)
   resque (~> 1.25.2)
-  tweetstream
+  tweetstream (~> 2.6.1)
+  weighted_randomizer

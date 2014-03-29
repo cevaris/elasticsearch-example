@@ -6,6 +6,7 @@ gem 'forgery', '0.5.0'
 gem "activesupport", require: "active_support"
 gem 'i18n'
 gem 'tweetstream', '~> 2.6.1'
+gem 'weighted_randomizer'
 
 
 gem 'redis', '~> 3.0.7'
