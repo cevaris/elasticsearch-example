@@ -1,29 +1,19 @@
 require 'multi_json'
 require 'faraday'
-require 'elasticsearch/api'
+require 'elasticsearch'
+
+
 
 
 class Base
-  include Elasticsearch::API
-
-  ES_CONN = ::Faraday::Connection.new url: 'http://localhost:9200'
-
+  attr_accessor :esc
+  
   def initialize
-    @method = nil
-    @path = nil
+    @esc = Elasticsearch::Client.new
   end
 
   def health
-    self.cluster.health
+    @esc.cluster.health
   end
-
-  def perform_request(method, path, params, body)
-    puts "--> #{method.upcase} #{path} #{params} #{body}"
-    
-    ES_CONN.run_request method.downcase.to_sym, path,
-      ( body ? MultiJson.dump(body): nil ),
-      {'Content-Type' => 'application/json'}
-  end
-
 
 end
