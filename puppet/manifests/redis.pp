@@ -6,8 +6,4 @@ class redis {
   $packages = ["wget", "gcc"]
   package { $packages: ensure => "installed"}
 
-
-  sudo make install
-
-
 }
