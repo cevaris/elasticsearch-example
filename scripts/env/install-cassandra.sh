@@ -53,4 +53,9 @@ if [ -d apache-cassandra-$VERSION  ]; then
 fi
 info "...done"
 
-info "Start Cassandra with the following command 'cassandra -f'"
+
+
+info "********************************************"
+info "Start Cassandra with the following command:"
+info "cassandra -f"
+info "********************************************"
