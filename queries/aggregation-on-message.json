@@ -1,0 +1,14 @@
+POST _search
+{
+    "aggs" : {
+        "path" : {
+          "terms" : {
+            "field" : "message",
+            "order": { 
+              "_count" : "desc" 
+            }
+          }
+        }
+    }
+}
+    

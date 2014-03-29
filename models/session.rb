@@ -26,11 +26,15 @@ class Session
 
     query = {
       query: {
-
-        term: {
-          'status' => 'error'
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            term: {'status' => 'error'}
+          }
         }
-      },
+      }
       # aggs: {
       #   path: {
       #     terms: {

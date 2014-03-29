@@ -1,0 +1,14 @@
+POST _search
+{
+    "filter" : {
+        "query" : {
+            "bool" : {
+               "should" : [
+                   { "term": { "year_bucket": 2014 } },
+                   { "term": { "min_bucket": 10 } }
+                ]
+            }
+        }
+    }
+}
+    
