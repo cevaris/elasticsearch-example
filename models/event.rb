@@ -7,6 +7,9 @@ require 'lorem_ipsum_amet'
 
 class Event
 
+  attr_accessor :id, :body, :metadata, :client_timestamp, :server_timestamp
+  attr_accessor :second, :minute, :hour, :week, :day, :month, :year
+
   def attrs
     hash = {}
     instance_variables.each {|var| hash[var.to_s.delete("@")] = instance_variable_get(var) }
@@ -29,7 +32,8 @@ class Event
 
   def save()
     $esc ||= Elasticsearch::Client.new
-    $esc.index(index: 'es', type: 'events', body: self.attrs)
+    puts self.attrs
+    # $esc.index(index: 'es', type: 'events', body: )
   end
 
 
@@ -72,22 +76,22 @@ class Event
     }
 
     sampler = WeightedRandomizer.new(weights)
-    event_type = Event.get_event(sampler.sample)
-    # item = samples[sampler.sample]     
-    # event = Event.new
-    # event.message = item[0]
-    # event[:status] = item[1]
-    # event[:client_timestamp] = Time.now.to_i - rand(1..100)
-    # event[:second] = Time.now.getutc.sec
-    # event[:minute_bucket] = Time.now.getutc.min
-    # event[:hour_bucket] = Time.now.getutc.hour
-    # event[:week_bucket] = Time.now.getutc.yday/7
-    # event[:day_bucket] = Time.now.getutc.day
-    # event[:month_bucket] = Time.now.getutc.month
-    # event[:year_bucket] = Time.now.getutc.year
+    item = Event.get_event(sampler.sample)
 
-    # event
-    # Session.new(session)
+    event = Event.new
+    event.server_timestamp = Time.now.getutc.to_i
+    event.client_timestamp = Time.now.getutc.to_i - rand(10..1000)
+    event.id = "#{event.client_timestamp}-#{item[1][:app_id]}-#{item[1][:client_id]}"
+    event.body = item[0]
+    event.metadata = item[1]
+    event.second = Time.now.getutc.sec
+    event.minute = Time.now.getutc.min
+    event.hour = Time.now.getutc.hour
+    event.week = Time.now.getutc.yday/7
+    event.day = Time.now.getutc.day
+    event.month = Time.now.getutc.month
+    event.year = Time.now.getutc.year
+    event.save
   end
 
 end

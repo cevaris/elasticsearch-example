@@ -13,8 +13,11 @@ require './models/event'
 # end
 
 
-event = Event.create()
-puts event
+1000000.times do
+  event = Event.create()
+  # puts event.inspect
+end
+
 
 
 
