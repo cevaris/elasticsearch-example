@@ -17,23 +17,11 @@ class Session
   end
 
   def self.agg(field, sort="desc")
-    # query = {}
-    # query[:aggs] = {}
-    # query[:aggs][:path] = {}
-    # query[:aggs][:path][:terms] = {}
-    # query[:aggs][:path][:terms][:field] = feild
-    # query[:aggs][:path][:terms][:order] = { "_count" => sort }
-
     query = {
-      query: {
-        filtered: {
-          query: {
-            match_all: {}
-          },
-          filter: {
-            term: {'status' => 'error'}
-          }
-        }
+      filter: { 
+        and: [
+            { term: { "message" => "login" } }
+        ] 
       }
       # aggs: {
       #   path: {
