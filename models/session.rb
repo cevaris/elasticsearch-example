@@ -1,22 +1,39 @@
 require 'weighted_randomizer'
 require 'elasticsearch'
+require 'multi_json'
 
 class Session
 
   attr_accessor :path
 
   def attrs
-    # puts instance_variables.inspect
-    instance_variables.collect{|ivar| {"#{ivar[1..-1]}" => instance_variable_get(ivar)} }
+    hash = {}
+    instance_variables.each {|var| hash[var.to_s.delete("@")] = instance_variable_get(var) }
+    hash
   end
 
   def initialize(path)
     @path = path
   end
 
+  def self.agg(feild)
+    query = {}
+    query[:aggs] = {}
+    query[:aggs][:path] = {}
+    query[:aggs][:path] = {}
+    query[:aggs][:path][:terms] = {}
+    query[:aggs][:path][:terms][:field] = feild
+    # query[:aggs][:path][:histogram] = {}
+    # query[:aggs][:path][:histogram][:field] = keyword
+
+    puts query
+    $esc ||= Elasticsearch::Client.new
+    $esc.search(index: 'es', type: 'events', body: query)
+  end
+
   def save()
     $esc ||= Elasticsearch::Client.new
-    $esc.index(index: 'es', type: 'events', body: self)
+    $esc.index(index: 'es', type: 'events', body: self.attrs)
   end
   
   def self.create()
@@ -24,7 +41,7 @@ class Session
       a:5, b:5, c:25, d:15, e:10, f: 4, g: 20, h: 5, i: 4, j: 7
     }
 
-    session = [['open',:info]]
+    session = []
 
     samples = {
       a: ['login',:info],
@@ -46,9 +63,9 @@ class Session
       item = samples[sampler.sample]
 
       event = {}
-      event[:body] = item[0]
+      event[:message] = item[0]
       event[:status] = item[1]
-      event[:client_timestamp] = Time.now.to_i
+      event[:client_timestamp] = Time.now.to_i - rand(1..100)
       event[:second] = Time.now.getutc.sec
       event[:minute_bucket] = Time.now.getutc.min
       event[:hour_bucket] = Time.now.getutc.hour
@@ -59,6 +76,7 @@ class Session
       session << event
     end
 
+    session = session.sort_by { |k| k[:client_timestamp] }
     Session.new(session)
   end
 
